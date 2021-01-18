@@ -15,6 +15,7 @@ type Article struct {
 
 // ArticleDto 文章数据传输
 type ArticleDto struct {
+	ArtID    uint   `json:"artid"`
 	UserID   uint   `json:"userid"`   // 用户id
 	Title    string `json:"title"`    // 文章标题
 	SubTitle string `json:"subtitle"` // 文章简介

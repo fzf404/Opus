@@ -36,7 +36,7 @@ func Register(ctx *gin.Context) {
 
 	// 判断邮箱是否合法
 	if !util.VerifyEmailFormat(email) {
-		response.Warning(ctx, nil, "邮箱不合法")
+		response.Fail(ctx, nil, "邮箱不合法")
 		return
 	}
 
@@ -44,7 +44,7 @@ func Register(ctx *gin.Context) {
 	var user model.User
 	DB.Where("name = ?", name).First(&user)
 	if user.ID != 0 {
-		response.Fail(ctx, nil, "用户名已存在")
+		response.Warning(ctx, nil, "用户名已存在")
 		return
 	}
 	DB.Where("email = ?", email).First(&user)
@@ -112,10 +112,26 @@ func Login(ctx *gin.Context) {
 
 }
 
-// Info 输出用户信息
-func Info(ctx *gin.Context) {
+// MyInfo 输出我的信息
+func MyInfo(ctx *gin.Context) {
 	// 获取中间件添加的user
 	user, _ := ctx.Get("user")
-	response.Success(ctx, gin.H{"user": dto.TouserDto(user.(model.User))}, "登录成功")
+	response.Success(ctx, gin.H{"user": dto.TouserMyDto(user.(model.User))}, "个人信息获取成功")
 
+}
+
+// GetInfo 输出用户信息
+func GetInfo(ctx *gin.Context) {
+	DB := database.GetDB()
+
+	var user model.User
+	// 获取用户信息
+	userid := ctx.PostForm("userid")
+	DB.Where("id = ?", userid).First(&user)
+	// 判断用户是否存在
+	if user.ID == 0 {
+		response.NotFind(ctx, nil, "该用户不存在")
+		return
+	}
+	response.Success(ctx, gin.H{"user": dto.TouserUserDto(user)}, "个人信息获取成功")
 }

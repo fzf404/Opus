@@ -2,13 +2,22 @@ package dto
 
 import "Opus/model"
 
-// TouserDto 用户Dto
-func TouserDto(user model.User) model.UserDto {
+// TouserMyDto 登录用户Dto
+func TouserMyDto(user model.User) model.UserDto {
 
 	return model.UserDto{
 		UserID: user.ID,
 		Name:   user.Name,
 		Email:  user.Email,
+	}
+}
+
+// TouserUserDto 默认Dto
+func TouserUserDto(user model.User) model.UserDto {
+
+	return model.UserDto{
+		UserID: user.ID,
+		Name:   user.Name,
 	}
 
 }

@@ -23,6 +23,9 @@ func Success(ctx *gin.Context, data gin.H, msg string) {
 func Warning(ctx *gin.Context, data gin.H, msg string) {
 	Response(ctx, http.StatusUnprocessableEntity, 422, data, msg)
 }
+func NotFind(ctx *gin.Context, data gin.H, msg string) {
+	Response(ctx, http.StatusNotFound, 404, data, msg)
+}
 // Fail 错误响应
 func Fail(ctx *gin.Context, data gin.H, msg string) {
 	Response(ctx, http.StatusBadRequest, 400, data, msg)

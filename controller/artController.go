@@ -5,19 +5,11 @@ import (
 	"Opus/dto"
 	"Opus/model"
 	"Opus/response"
+	"log"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
-
-// type Article struct {
-// 	gorm.Model
-// 	UserID   	uint   	// 用户id
-// 	Title    	string 	// 文章标题
-// 	SubTitle 	string 	// 文章简介
-// 	ArtType    	string 	// 文章类型
-// 	Content		string 	// 文章内容
-// 	Likes    	uint   	// 点赞数量
-// }
 
 // AddArticle 添加文章
 func AddArticle(ctx *gin.Context) {
@@ -63,13 +55,37 @@ func AddArticle(ctx *gin.Context) {
 func GetArticle(ctx *gin.Context) {
 	DB := database.GetDB()
 
+	// 获取文章
 	artID := ctx.PostForm("artid")
-
 	var art = model.Article{}
 	DB.First(&art, artID)
 	if art.ID == 0 {
-		response.Fail(ctx, nil, "文章不存在")
+		response.NotFind(ctx, nil, "文章不存在")
 		return
 	}
 	response.Success(ctx, gin.H{"article": dto.ArticleDto(art)}, "获取成功")
+}
+
+// GetAllArt 取全部文章列表
+func GetAllArt(ctx *gin.Context) {
+	DB := database.GetDB()
+	userid := ctx.PostForm("userid")
+	// 建立文章列表
+	var articles []model.Article
+	// map处理全部articles
+	items := make(map[string]model.ArticleDto)
+	// 获取列表
+	DB.Where("user_id = ?", userid).Find(&articles)
+	log.Print(articles)
+	// 判断获取情况
+	if len(articles) == 0 {
+		response.NotFind(ctx, nil, "未找到已发布的文章")
+		return
+	}
+	
+	for index, art := range articles {
+		// 使用dto处理全部article
+		items["article"+strconv.Itoa(index)] = dto.ArticleInfoDto(art)
+	}
+	response.Success(ctx, gin.H{"articles": items}, "获取全部文章成功")
 }
