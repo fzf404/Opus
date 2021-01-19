@@ -19,14 +19,18 @@ func Response(ctx *gin.Context, httpStatus int, code int, data gin.H, msg string
 func Success(ctx *gin.Context, data gin.H, msg string) {
 	Response(ctx, http.StatusOK, 200, data, msg)
 }
+
 // Warning 提示响应
 func Warning(ctx *gin.Context, data gin.H, msg string) {
-	Response(ctx, http.StatusUnprocessableEntity, 422, data, msg)
+	Response(ctx, http.StatusOK, 422, data, msg)
 }
+
+// NotFind 找不到响应
 func NotFind(ctx *gin.Context, data gin.H, msg string) {
-	Response(ctx, http.StatusNotFound, 404, data, msg)
+	Response(ctx, http.StatusOK, 404, data, msg)
 }
+
 // Fail 错误响应
 func Fail(ctx *gin.Context, data gin.H, msg string) {
-	Response(ctx, http.StatusBadRequest, 400, data, msg)
+	Response(ctx, http.StatusOK, 400, data, msg)
 }
