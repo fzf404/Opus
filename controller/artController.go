@@ -26,15 +26,19 @@ func AddArticle(ctx *gin.Context) {
 
 	if len(title) < 2 || len(title) > 23 {
 		response.Warning(ctx, nil, "标题字数必须在2-23个之间")
+		return
 	}
 	if len(subTitle) > 50 {
 		response.Warning(ctx, nil, "描述必须在50位以内")
+		return
 	}
 	if len(artType) > 10 {
 		response.Warning(ctx, nil, "文章类型必须在10位以内")
+		return
 	}
 	if len(context) < 40 {
 		response.Warning(ctx, nil, "文章字数必须大于36")
+		return
 	}
 
 	newArt := model.Article{
