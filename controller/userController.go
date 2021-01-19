@@ -63,7 +63,7 @@ func Register(ctx *gin.Context) {
 		Name:     name,
 		Email:    email,
 		Password: string(hashPassword),
-		HeadImg:  "https://i0.hdslb.com/bfs/face/member/noface.jpg",
+		HeadImg:  "/static/avatar.jpg",
 		Super:    false,
 		Active:   false,
 	}
