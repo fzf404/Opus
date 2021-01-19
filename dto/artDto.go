@@ -10,19 +10,21 @@ func ArticleDto(art model.Article) model.ArticleDto {
 		UserID:   art.UserID,
 		Title:    art.Title,
 		SubTitle: art.SubTitle,
+		HeadImg:  art.HeadImg,
 		ArtType:  art.ArtType,
 		Content:  art.Content,
 		Likes:    art.Likes,
 	}
 }
-// ArticleDto 文章Dto
+// ArticleInfoDto 文章Dto
 func ArticleInfoDto(art model.Article) model.ArticleDto {
-
+	// 除Context
 	return model.ArticleDto{
 		ArtID:    art.ID,
 		UserID:   art.UserID,
 		Title:    art.Title,
 		SubTitle: art.SubTitle,
+		HeadImg:  art.HeadImg,
 		ArtType:  art.ArtType,
 		Likes:    art.Likes,
 	}

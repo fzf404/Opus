@@ -21,6 +21,7 @@ func AddArticle(ctx *gin.Context) {
 	title := ctx.PostForm("title")
 	subTitle := ctx.PostForm("subtitle")
 	artType := ctx.PostForm("type")
+	headImg := ctx.PostForm("headimg")
 	context := ctx.PostForm("context")
 
 	if len(title) < 2 || len(title) > 23 {
@@ -41,6 +42,7 @@ func AddArticle(ctx *gin.Context) {
 		Title:    title,
 		SubTitle: subTitle,
 		ArtType:  artType,
+		HeadImg:  headImg,
 		Content:  context,
 		Likes:    0,
 	}
@@ -66,13 +68,22 @@ func GetArticle(ctx *gin.Context) {
 	response.Success(ctx, gin.H{"article": dto.ArticleDto(art)}, "获取成功")
 }
 
-// GetAllArt 取全部文章列表
-func GetAllArt(ctx *gin.Context) {
+// GetInfo 取全部文章列表
+func GetInfo(ctx *gin.Context) {
+
 	DB := database.GetDB()
+
+	// 用户信息处理
+	var user model.User
 	userid := ctx.PostForm("userid")
-	// 建立文章列表
-	var articles []model.Article
+	DB.Where("id = ?", userid).First(&user)
+	if user.ID == 0 {
+		response.NotFind(ctx, nil, "该用户不存在")
+		return
+	}
+
 	// map处理全部articles
+	var articles []model.Article
 	items := make(map[string]model.ArticleDto)
 	// 获取列表
 	DB.Where("user_id = ?", userid).Find(&articles)
@@ -82,10 +93,13 @@ func GetAllArt(ctx *gin.Context) {
 		response.NotFind(ctx, nil, "未找到已发布的文章")
 		return
 	}
-	
+
 	for index, art := range articles {
 		// 使用dto处理全部article
 		items["article"+strconv.Itoa(index)] = dto.ArticleInfoDto(art)
 	}
-	response.Success(ctx, gin.H{"articles": items}, "获取全部文章成功")
+	response.Success(ctx, gin.H{
+		"user":     dto.TouserUserDto(user),
+		"articles": items,
+	}, "获取全部文章成功")
 }

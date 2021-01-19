@@ -63,7 +63,9 @@ func Register(ctx *gin.Context) {
 		Name:     name,
 		Email:    email,
 		Password: string(hashPassword),
+		HeadImg:  "https://i0.hdslb.com/bfs/face/member/noface.jpg",
 		Super:    false,
+		Active:		false,
 	}
 	DB.Create(&newUser)
 
@@ -118,20 +120,4 @@ func MyInfo(ctx *gin.Context) {
 	user, _ := ctx.Get("user")
 	response.Success(ctx, gin.H{"user": dto.TouserMyDto(user.(model.User))}, "个人信息获取成功")
 
-}
-
-// GetInfo 输出用户信息
-func GetInfo(ctx *gin.Context) {
-	DB := database.GetDB()
-
-	var user model.User
-	// 获取用户信息
-	userid := ctx.PostForm("userid")
-	DB.Where("id = ?", userid).First(&user)
-	// 判断用户是否存在
-	if user.ID == 0 {
-		response.NotFind(ctx, nil, "该用户不存在")
-		return
-	}
-	response.Success(ctx, gin.H{"user": dto.TouserUserDto(user)}, "个人信息获取成功")
 }

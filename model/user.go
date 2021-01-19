@@ -10,16 +10,17 @@ type User struct {
 	Name     string
 	Email    string
 	Password string
+	HeadImg  string
 	Super    bool
 	Active   bool
 }
 
 // UserDto 用户数据传输
 type UserDto struct {
-	UserID uint   `json:"userID"`
-	Name   string `json:"name"`
-	Email  string `json:"email"`
-	Super  bool   `json:"bool"`
-	Active bool   `json:"active"`
+	UserID  uint   `json:"userID"`
+	Name    string `json:"name"`
+	Email   string `json:"email"`
+	HeadImg string `json:"headimg"`
+	Super   bool   `json:"Super"`
+	Active  bool   `json:"active"`
 }
-
