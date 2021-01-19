@@ -5,7 +5,6 @@ import (
 	"Opus/dto"
 	"Opus/model"
 	"Opus/response"
-	"log"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -22,10 +21,10 @@ func AddArticle(ctx *gin.Context) {
 	subTitle := ctx.PostForm("subtitle")
 	artType := ctx.PostForm("type")
 	headImg := ctx.PostForm("headimg")
-	context := ctx.PostForm("context")
+	content := ctx.PostForm("content")
 
-	if len(title) < 2 || len(title) > 23 {
-		response.Warning(ctx, nil, "标题字数必须在2-23个之间")
+	if len(title) < 3 || len(title) > 23 {
+		response.Warning(ctx, nil, "标题字数必须在3-23个之间")
 		return
 	}
 	if len(subTitle) > 50 {
@@ -36,7 +35,7 @@ func AddArticle(ctx *gin.Context) {
 		response.Warning(ctx, nil, "文章类型必须在10位以内")
 		return
 	}
-	if len(context) < 40 {
+	if len(content) < 40 {
 		response.Warning(ctx, nil, "文章字数必须大于36")
 		return
 	}
@@ -47,7 +46,7 @@ func AddArticle(ctx *gin.Context) {
 		SubTitle: subTitle,
 		ArtType:  artType,
 		HeadImg:  headImg,
-		Content:  context,
+		Content:  content,
 		Likes:    0,
 	}
 
@@ -91,7 +90,6 @@ func GetInfo(ctx *gin.Context) {
 	items := make(map[string]model.ArticleDto)
 	// 获取列表
 	DB.Where("user_id = ?", userid).Find(&articles)
-	log.Print(articles)
 	// 判断获取情况
 	if len(articles) == 0 {
 		response.NotFind(ctx, nil, "未找到已发布的文章")
@@ -100,10 +98,36 @@ func GetInfo(ctx *gin.Context) {
 
 	for index, art := range articles {
 		// 使用dto处理全部article
-		items["article"+strconv.Itoa(index)] = dto.ArticleInfoDto(art)
+		items["article"+strconv.Itoa(index+1)] = dto.ArticleInfoDto(art)
 	}
 	response.Success(ctx, gin.H{
 		"user":     dto.TouserUserDto(user),
+		"articles": items,
+	}, "获取全部文章成功")
+}
+
+// GetArticles 通过关键词查找文章
+func GetArticles(ctx *gin.Context) {
+
+	DB := database.GetDB()
+	name := ctx.PostForm("name")
+	// map处理全部articles
+	var articles []model.Article
+	items := make(map[string]model.ArticleDto)
+	// 获取列表
+	DB.Where("title = ?", name).Find(&articles)
+	// 判断获取情况
+	if len(articles) == 0 {
+		response.NotFind(ctx, nil, "未找到已发布的文章")
+		return
+	}
+
+	for index, art := range articles {
+		// 使用dto处理全部article
+		items["article"+strconv.Itoa(index+1)] = dto.ArticleInfoDto(art)
+	}
+
+	response.Success(ctx, gin.H{
 		"articles": items,
 	}, "获取全部文章成功")
 }
