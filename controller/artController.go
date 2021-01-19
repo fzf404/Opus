@@ -32,8 +32,8 @@ func AddArticle(ctx *gin.Context) {
 	if len(artType) > 10 {
 		response.Warning(ctx, nil, "文章类型必须在10位以内")
 	}
-	if len(context) < 20 {
-		response.Warning(ctx, nil, "文章字数必须大于18")
+	if len(context) < 40 {
+		response.Warning(ctx, nil, "文章字数必须大于36")
 	}
 
 	newArt := model.Article{
@@ -57,7 +57,7 @@ func GetArticle(ctx *gin.Context) {
 
 	// 获取文章
 	artID := ctx.PostForm("artid")
-	var art = model.Article{}
+	var art model.Article
 	DB.First(&art, artID)
 	if art.ID == 0 {
 		response.NotFind(ctx, nil, "文章不存在")
