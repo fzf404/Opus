@@ -9,6 +9,7 @@ func TouserMyDto(user model.User) model.UserDto {
 		UserID: user.ID,
 		Name:   user.Name,
 		Email:  user.Email,
+		HeadImg: user.HeadImg,
 	}
 }
 
@@ -18,6 +19,7 @@ func TouserUserDto(user model.User) model.UserDto {
 	return model.UserDto{
 		UserID: user.ID,
 		Name:   user.Name,
+		HeadImg: user.HeadImg,
 	}
 
 }

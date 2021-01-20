@@ -29,7 +29,7 @@ func AddArticle(ctx *gin.Context) {
 
 	DB.Create(&newArt)
 
-	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": newArt.Title}, "文章发布成功")
+	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": newArt.Title, "artid": newArt.ID}, "文章发布成功")
 
 }
 
@@ -75,17 +75,15 @@ func ModArticle(ctx *gin.Context) {
 	super := art.Super
 
 	article, _ := ctx.Get("article")
-	modArt := model.Article{
-		UserID:   user.(model.User).ID,
-		Title:    article.(model.Article).Title,
-		SubTitle: article.(model.Article).SubTitle,
-		ArtType:  article.(model.Article).ArtType,
-		HeadImg:  article.(model.Article).HeadImg,
-		Content:  article.(model.Article).Content,
-		Likes:    likes,
-		Super:    super,
-	}
 
-	DB.Save(&modArt)
-	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": modArt.Title}, "文章更新成功")
+	art.Title = article.(model.Article).Title
+	art.SubTitle = article.(model.Article).SubTitle
+	art.ArtType = article.(model.Article).ArtType
+	art.HeadImg = article.(model.Article).HeadImg
+	art.Content = article.(model.Article).Content
+	art.Likes = likes
+	art.Super = super
+
+	DB.Save(&art)
+	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": art.Title, "artid": art.ID}, "文章更新成功")
 }
