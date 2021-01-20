@@ -19,6 +19,7 @@ func AddArticle(ctx *gin.Context) {
 	// 新建文章
 	newArt := model.Article{
 		UserID:   user.(model.User).ID,
+		UserName: user.(model.User).Name,
 		Title:    article.(model.Article).Title,
 		SubTitle: article.(model.Article).SubTitle,
 		ArtType:  article.(model.Article).ArtType,
@@ -51,7 +52,7 @@ func DelArticle(ctx *gin.Context) {
 	}
 
 	DB.Delete(&article)
-	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": article.Title}, "删除成功")
+	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": article.Title,"artid": article.ID}, "删除成功")
 }
 
 // ModArticle 修改文章
@@ -70,9 +71,6 @@ func ModArticle(ctx *gin.Context) {
 		response.Fail(ctx, nil, "修改请求非法")
 		return
 	}
-	// 继承过去信息
-	likes := art.Likes
-	super := art.Super
 
 	article, _ := ctx.Get("article")
 
@@ -81,8 +79,6 @@ func ModArticle(ctx *gin.Context) {
 	art.ArtType = article.(model.Article).ArtType
 	art.HeadImg = article.(model.Article).HeadImg
 	art.Content = article.(model.Article).Content
-	art.Likes = likes
-	art.Super = super
 
 	DB.Save(&art)
 	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": art.Title, "artid": art.ID}, "文章更新成功")

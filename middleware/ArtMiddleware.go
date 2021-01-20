@@ -14,7 +14,7 @@ func ArtMiddleware() gin.HandlerFunc {
 		subTitle := ctx.PostForm("subtitle")
 		artType := ctx.PostForm("type")
 		// headImg := ctx.PostForm("headimg")
-		headImg := "/static/noface.jpg"
+		headImg := "/static/img/noimg.jpg"
 		content := ctx.PostForm("content")
 
 		if len(title) < 3 || len(title) > 23 {

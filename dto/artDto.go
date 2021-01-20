@@ -8,6 +8,7 @@ func ArticleDto(art model.Article) model.ArticleDto {
 	return model.ArticleDto{
 		ArtID:    art.ID,
 		UserID:   art.UserID,
+		UserName: art.UserName,
 		Title:    art.Title,
 		SubTitle: art.SubTitle,
 		HeadImg:  art.HeadImg,
@@ -22,6 +23,7 @@ func ArticleInfoDto(art model.Article) model.ArticleDto {
 	return model.ArticleDto{
 		ArtID:    art.ID,
 		UserID:   art.UserID,
+		UserName: art.UserName,
 		Title:    art.Title,
 		SubTitle: art.SubTitle,
 		HeadImg:  art.HeadImg,
