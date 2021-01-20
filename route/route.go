@@ -17,23 +17,23 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	r.POST("/login", controller.Login)
 	r.POST("/myinfo", middleware.AuthMiddleware(), controller.MyInfo)
 
-
+	artRoutes := r.Group("")
+	artRoutes.Use(middleware.AuthMiddleware())
 	// 添加文章
-	r.POST("/addart", middleware.AuthMiddleware(), controller.AddArticle)
+	artRoutes.POST("/addart", middleware.ArtMiddleware(), controller.AddArticle)
 	// 修改文章
-	// r.POST("/addart", middleware.AuthMiddleware(), controller.AddArticle)
+	artRoutes.POST("/modart", middleware.ArtMiddleware(), controller.ModArticle)
 	// 删除文章
-	// r.POST("/delart", middleware.AuthMiddleware(), controller.AddArticle)
+	artRoutes.POST("/delart", controller.DelArticle)
+
 	// 获取文章
 	r.POST("/getart", controller.GetArticle)
-
 	// 搜索
 	r.POST("/search", controller.Search)
 	// 获取用户信息+文章
-	r.POST("/getinfo", controller.GetInfo)
+	r.POST("/getarts", controller.GetArts)
 	// 通过文章名获取文章
-	r.POST("/getarts", controller.GetArticles)
-	
-	
+	r.POST("/findarts", controller.FindArticles)
+
 	return r
 }

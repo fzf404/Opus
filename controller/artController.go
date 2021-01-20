@@ -2,10 +2,8 @@ package controller
 
 import (
 	"Opus/database"
-	"Opus/dto"
 	"Opus/model"
 	"Opus/response"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,120 +12,80 @@ import (
 func AddArticle(ctx *gin.Context) {
 	DB := database.GetDB()
 
+	// 获得文章信息及用户信息
 	user, _ := ctx.Get("user")
+	article, _ := ctx.Get("article")
 
-	userID := user.(model.User).ID
-	title := ctx.PostForm("title")
-	subTitle := ctx.PostForm("subtitle")
-	artType := ctx.PostForm("type")
-	headImg := ctx.PostForm("headimg")
-	content := ctx.PostForm("content")
-
-	if len(title) < 3 || len(title) > 23 {
-		response.Warning(ctx, nil, "标题字数必须在3-23个之间")
-		return
-	}
-	if len(subTitle) > 50 {
-		response.Warning(ctx, nil, "描述必须在50位以内")
-		return
-	}
-	if len(artType) > 10 {
-		response.Warning(ctx, nil, "文章类型必须在10位以内")
-		return
-	}
-	if len(content) < 40 {
-		response.Warning(ctx, nil, "文章字数必须大于36")
-		return
-	}
-
+	// 新建文章
 	newArt := model.Article{
-		UserID:   userID,
-		Title:    title,
-		SubTitle: subTitle,
-		ArtType:  artType,
-		HeadImg:  headImg,
-		Content:  content,
+		UserID:   user.(model.User).ID,
+		Title:    article.(model.Article).Title,
+		SubTitle: article.(model.Article).SubTitle,
+		ArtType:  article.(model.Article).ArtType,
+		HeadImg:  article.(model.Article).HeadImg,
+		Content:  article.(model.Article).Content,
 		Likes:    0,
 	}
 
 	DB.Create(&newArt)
 
-	response.Success(ctx, nil, "文章发布成功")
+	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": newArt.Title}, "文章发布成功")
 
 }
 
-// GetArticle 获取文章
-func GetArticle(ctx *gin.Context) {
+// DelArticle 删除文章
+func DelArticle(ctx *gin.Context) {
 	DB := database.GetDB()
 
-	// 获取文章
+	user, _ := ctx.Get("user")
+
+	// 获取用户即文章信息
+	userID := user.(model.User).ID
 	artID := ctx.PostForm("artid")
+
+	var article model.Article
+	DB.First(&article, artID)
+	if article.UserID != userID {
+		response.Fail(ctx, nil, "删除请求非法")
+		return
+	}
+
+	DB.Delete(&article)
+	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": article.Title}, "删除成功")
+}
+
+// ModArticle 修改文章
+func ModArticle(ctx *gin.Context) {
+	DB := database.GetDB()
+
+	user, _ := ctx.Get("user")
+	// 获取用户id和文章id
+	userID := user.(model.User).ID
+	artID := ctx.PostForm("artid")
+
+	// 判断该文章是否为该用户所有
 	var art model.Article
 	DB.First(&art, artID)
-	if art.ID == 0 {
-		response.NotFind(ctx, nil, "文章不存在")
+	if art.UserID != userID {
+		response.Fail(ctx, nil, "修改请求非法")
 		return
 	}
-	response.Success(ctx, gin.H{"article": dto.ArticleDto(art)}, "获取成功")
-}
+	// 继承过去信息
+	likes := art.Likes
+	super := art.Super
 
-// GetInfo 取全部文章列表
-func GetInfo(ctx *gin.Context) {
-
-	DB := database.GetDB()
-
-	// 用户信息处理
-	var user model.User
-	userid := ctx.PostForm("userid")
-	DB.Where("id = ?", userid).First(&user)
-	if user.ID == 0 {
-		response.NotFind(ctx, nil, "该用户不存在")
-		return
+	article, _ := ctx.Get("article")
+	modArt := model.Article{
+		UserID:   user.(model.User).ID,
+		Title:    article.(model.Article).Title,
+		SubTitle: article.(model.Article).SubTitle,
+		ArtType:  article.(model.Article).ArtType,
+		HeadImg:  article.(model.Article).HeadImg,
+		Content:  article.(model.Article).Content,
+		Likes:    likes,
+		Super:    super,
 	}
 
-	// map处理全部articles
-	var articles []model.Article
-	items := make(map[string]model.ArticleDto)
-	// 获取列表
-	DB.Where("user_id = ?", userid).Find(&articles)
-	// 判断获取情况
-	if len(articles) == 0 {
-		response.NotFind(ctx, nil, "未找到已发布的文章")
-		return
-	}
-
-	for index, art := range articles {
-		// 使用dto处理全部article
-		items["article"+strconv.Itoa(index+1)] = dto.ArticleInfoDto(art)
-	}
-	response.Success(ctx, gin.H{
-		"user":     dto.TouserUserDto(user),
-		"articles": items,
-	}, "获取全部文章成功")
-}
-
-// GetArticles 通过关键词查找文章
-func GetArticles(ctx *gin.Context) {
-
-	DB := database.GetDB()
-	name := ctx.PostForm("name")
-	// map处理全部articles
-	var articles []model.Article
-	items := make(map[string]model.ArticleDto)
-	// 获取列表
-	DB.Where("title = ?", name).Find(&articles)
-	// 判断获取情况
-	if len(articles) == 0 {
-		response.NotFind(ctx, nil, "未找到已发布的文章")
-		return
-	}
-
-	for index, art := range articles {
-		// 使用dto处理全部article
-		items["article"+strconv.Itoa(index+1)] = dto.ArticleInfoDto(art)
-	}
-
-	response.Success(ctx, gin.H{
-		"articles": items,
-	}, "获取全部文章成功")
+	DB.Save(&modArt)
+	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": modArt.Title}, "文章更新成功")
 }

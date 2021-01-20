@@ -63,7 +63,7 @@ func Register(ctx *gin.Context) {
 		Name:     name,
 		Email:    email,
 		Password: string(hashPassword),
-		HeadImg:  "/static/avatar.jpg",
+		HeadImg:  "/static/noface.jpg",
 		Super:    false,
 		Active:   false,
 	}
@@ -122,32 +122,3 @@ func MyInfo(ctx *gin.Context) {
 
 }
 
-// Search 搜索用户名或文章名
-func Search(ctx *gin.Context) {
-	DB := database.GetDB()
-
-	name := ctx.PostForm("name")
-	if len(name) < 3 {
-		response.NotFind(ctx, nil, "什么都没找到~")
-		return
-	}
-
-	var user model.User
-	var article model.Article
-	DB.First(&user, "name = ?", name)
-	DB.First(&article, "title = ?", name)
-
-	if user.ID != 0 {
-		response.Success(ctx, gin.H{
-			"userid": user.ID,
-		}, "找到用户了")
-		return
-	}
-	if article.ID != 0 {
-		response.Success(ctx, gin.H{
-			"userid": article.UserID,
-		}, "找到文章了")
-		return
-	}
-	response.NotFind(ctx, nil, "什么都没找到~")
-}
