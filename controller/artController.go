@@ -43,6 +43,10 @@ func DelArticle(ctx *gin.Context) {
 	// 获取用户即文章信息
 	userID := user.(model.User).ID
 	artID := ctx.PostForm("artid")
+	if len(artID) == 0 {
+		response.Fail(ctx, nil, "删除请求非法")
+		return
+	}
 
 	var article model.Article
 	DB.First(&article, artID)
@@ -52,7 +56,7 @@ func DelArticle(ctx *gin.Context) {
 	}
 
 	DB.Delete(&article)
-	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": article.Title,"artid": article.ID}, "删除成功")
+	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": article.Title, "artid": article.ID}, "删除成功")
 }
 
 // ModArticle 修改文章
