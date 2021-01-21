@@ -28,5 +28,6 @@ type ArticleDto struct {
 	HeadImg  string `json:"headimg"`  // 首页图
 	Content  string `json:"content"`  // 文章内容
 	Likes    uint   `json:"likes"`    // 点赞数量
-	Super    bool   `json:"Super"`
+	Share    uint   `json:"share"`
+	Super    bool   `json:"super"`
 }

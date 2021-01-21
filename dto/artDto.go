@@ -14,9 +14,11 @@ func ArticleDto(art model.Article) model.ArticleDto {
 		HeadImg:  art.HeadImg,
 		ArtType:  art.ArtType,
 		Content:  art.Content,
+		Share:    art.Share,
 		Likes:    art.Likes,
 	}
 }
+
 // ArticleInfoDto 文章Dto
 func ArticleInfoDto(art model.Article) model.ArticleDto {
 	// 除Context
@@ -28,6 +30,7 @@ func ArticleInfoDto(art model.Article) model.ArticleDto {
 		SubTitle: art.SubTitle,
 		HeadImg:  art.HeadImg,
 		ArtType:  art.ArtType,
+		Share:    art.Share,
 		Likes:    art.Likes,
 	}
 }
