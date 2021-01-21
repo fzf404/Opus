@@ -14,9 +14,11 @@ func ArtMiddleware() gin.HandlerFunc {
 		title := ctx.PostForm("title")
 		subTitle := ctx.PostForm("subtitle")
 		artType := ctx.PostForm("type")
-		// headImg := ctx.PostForm("headimg")
-		headImg := "/static/img/noimg.jpg"
 		content := ctx.PostForm("content")
+		headImg := ctx.PostForm("headimg")
+		if len(headImg) < 16 {
+			headImg = "/static/img/noimg.jpg"
+		}
 
 		if len(title) < 6 || len(title) > 64 {
 			response.Warning(ctx, nil, "标题字数必须在3-23个之间")
