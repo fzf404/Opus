@@ -17,7 +17,7 @@ func main() {
 
 	r := gin.Default()
 	// 设置最大文件大小
-	r.MaxMultipartMemory = 1 << 20
+	r.MaxMultipartMemory = 2 << 20
 	r = route.CollectRoute(r)
 	port := viper.GetString("common.port")
 	if port != "" {
