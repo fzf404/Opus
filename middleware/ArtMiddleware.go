@@ -22,8 +22,8 @@ func ArtMiddleware() gin.HandlerFunc {
 			ctx.Abort()
 			return
 		}
-		if len(subTitle) > 50 {
-			response.Warning(ctx, nil, "描述必须在50位以内")
+		if len(subTitle) > 120 {
+			response.Warning(ctx, nil, "描述必须在120位以内")
 			ctx.Abort()
 			return
 		}
