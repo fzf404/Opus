@@ -27,10 +27,11 @@ func UploadImg(ctx *gin.Context) {
 		response.Fail(ctx, nil, "图片上传失败")
 		return
 	}
+	var imglist = []string{file.Filename[4:]}
 	// response.Success(ctx, gin.H{"url": file.Filename[4:]}, "上传成功")
 	ctx.JSON(200, gin.H{
 		"errno": 0,
-		"data": file.Filename[4:],
-		"msg":  "上传成功",
+		"data":  imglist,
+		"msg":   "上传成功",
 	})
 }
