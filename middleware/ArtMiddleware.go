@@ -3,6 +3,7 @@ package middleware
 import (
 	"Opus/model"
 	"Opus/response"
+	"log"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,23 +18,25 @@ func ArtMiddleware() gin.HandlerFunc {
 		headImg := "/static/img/noimg.jpg"
 		content := ctx.PostForm("content")
 
-		if len(title) < 3 || len(title) > 23 {
+		if len(title) < 6 || len(title) > 64 {
 			response.Warning(ctx, nil, "标题字数必须在3-23个之间")
 			ctx.Abort()
 			return
 		}
-		if len(subTitle) > 120 {
-			response.Warning(ctx, nil, "描述必须在120位以内")
+		if len(subTitle) > 256 {
+			response.Warning(ctx, nil, "描述必须在100位以内")
 			ctx.Abort()
 			return
 		}
-		if len(artType) > 10 {
-			response.Warning(ctx, nil, "文章类型必须在10位以内")
+		if len(artType) > 16 {
+			log.Print(artType)
+			log.Print(len(artType))
+			response.Warning(ctx, nil, "文章类型必须在5位以内")
 			ctx.Abort()
 			return
 		}
-		if len(content) < 40 {
-			response.Warning(ctx, nil, "文章字数必须大于36")
+		if len(content) < 512 {
+			response.Warning(ctx, nil, "文章字数必须大于100")
 			ctx.Abort()
 			return
 		}
