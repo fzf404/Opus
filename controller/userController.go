@@ -17,7 +17,7 @@ import (
 // Register 用户注册信息处理
 func Register(ctx *gin.Context) {
 
-	DB := database.GetDB()
+	db := database.GetDB()
 
 	// 获得用户数据
 	name := ctx.PostForm("name")
@@ -42,12 +42,12 @@ func Register(ctx *gin.Context) {
 
 	// 判断用户名邮箱是否存在
 	var user model.User
-	DB.Where("name = ?", name).First(&user)
+	db.Where("name = ?", name).First(&user)
 	if user.ID != 0 {
 		response.Warning(ctx, nil, "用户名已存在")
 		return
 	}
-	DB.Where("email = ?", email).First(&user)
+	db.Where("email = ?", email).First(&user)
 	if user.ID != 0 {
 		response.Fail(ctx, nil, "邮箱已存在")
 		return
@@ -67,14 +67,14 @@ func Register(ctx *gin.Context) {
 		Super:    false,
 		Active:   false,
 	}
-	DB.Create(&newUser)
+	db.Create(&newUser)
 
 	response.Success(ctx, nil, "注册成功")
 }
 
 // Login 用户登录信息处理
 func Login(ctx *gin.Context) {
-	DB := database.GetDB()
+	db := database.GetDB()
 
 	//获取数据
 	name := ctx.PostForm("name")
@@ -88,11 +88,11 @@ func Login(ctx *gin.Context) {
 
 	// 判断用户是否存在
 	var user model.User
-	DB.Where("name = ?", name).First(&user)
+	db.Where("name = ?", name).First(&user)
 	// 用户名判断
 	if user.ID == 0 {
 		// 邮箱判断
-		DB.Where("email = ?", name).First(&user)
+		db.Where("email = ?", name).First(&user)
 		if user.ID == 0 {
 			response.Fail(ctx, nil, "用户名或密码错误")
 			return
@@ -121,4 +121,3 @@ func MyInfo(ctx *gin.Context) {
 	response.Success(ctx, gin.H{"user": dto.TouserMyDto(user.(model.User))}, "个人信息获取成功")
 
 }
-

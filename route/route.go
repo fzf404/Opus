@@ -25,6 +25,8 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	artRoutes.POST("/modart", middleware.ArtMiddleware(), controller.ModArticle)
 	// 删除文章
 	artRoutes.POST("/delart", controller.DelArticle)
+	// 上传图片
+	artRoutes.POST("/upimg", controller.UploadImg)
 
 	// 获取文章
 	r.POST("/getart", controller.GetArticle)
@@ -34,6 +36,8 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	r.POST("/getarts", controller.GetArts)
 	// 通过文章名获取文章
 	r.POST("/findarts", controller.FindArticles)
+	// 获取最近10条记录
+	r.GET("/active", controller.GetActive)
 
 	return r
 }

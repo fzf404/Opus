@@ -12,19 +12,19 @@ import (
 
 // GetArticle 获取文章
 func GetArticle(ctx *gin.Context) {
-	DB := database.GetDB()
+	db := database.GetDB()
 
 	// 获取文章
 	artID := ctx.PostForm("artid")
 	var art model.Article
-	DB.First(&art, artID)
+	db.First(&art, artID)
 	if art.ID == 0 {
 		response.NotFind(ctx, nil, "文章不存在")
 		return
 	}
 	// 获取用户
 	var user model.User
-	DB.First(&user, art.UserID)
+	db.First(&user, art.UserID)
 	if user.ID == 0 {
 		response.NotFind(ctx, nil, "用户不存在")
 		return
@@ -35,12 +35,12 @@ func GetArticle(ctx *gin.Context) {
 // GetArts 取全部文章列表
 func GetArts(ctx *gin.Context) {
 
-	DB := database.GetDB()
+	db := database.GetDB()
 
 	// 用户信息处理
 	var user model.User
 	userid := ctx.PostForm("userid")
-	DB.Where("id = ?", userid).First(&user)
+	db.Where("id = ?", userid).First(&user)
 	if user.ID == 0 {
 		response.NotFind(ctx, nil, "该用户不存在")
 		return
@@ -50,7 +50,7 @@ func GetArts(ctx *gin.Context) {
 	var articles []model.Article
 	items := make(map[string]model.ArticleDto)
 	// 获取列表
-	DB.Where("user_id = ?", userid).Find(&articles)
+	db.Where("user_id = ?", userid).Find(&articles)
 	// 判断获取情况
 	if len(articles) == 0 {
 		response.NotFind(ctx, nil, "未找到已发布的文章")
@@ -69,7 +69,7 @@ func GetArts(ctx *gin.Context) {
 
 // Search 搜索用户名或文章名
 func Search(ctx *gin.Context) {
-	DB := database.GetDB()
+	db := database.GetDB()
 
 	name := ctx.PostForm("name")
 	if len(name) < 3 {
@@ -79,8 +79,8 @@ func Search(ctx *gin.Context) {
 
 	var user model.User
 	var article model.Article
-	DB.First(&user, "name = ?", name)
-	DB.First(&article, "title LIKE ?", "%"+name+"%")
+	db.First(&user, "name = ?", name)
+	db.First(&article, "title LIKE ?", "%"+name+"%")
 
 	if user.ID != 0 {
 		response.Success(ctx, gin.H{
@@ -100,13 +100,13 @@ func Search(ctx *gin.Context) {
 // FindArticles 通过关键词查找文章
 func FindArticles(ctx *gin.Context) {
 
-	DB := database.GetDB()
+	db := database.GetDB()
 	name := ctx.PostForm("name")
 	// map处理全部articles
 	var articles []model.Article
 	items := make(map[string]model.ArticleDto)
 	// 获取列表
-	DB.Where("title LIKE ?", "%"+name+"%").Find(&articles)
+	db.Where("title LIKE ?", "%"+name+"%").Find(&articles)
 	// 判断获取情况
 	if len(articles) == 0 {
 		response.NotFind(ctx, nil, "未找到已发布的文章")
@@ -118,6 +118,29 @@ func FindArticles(ctx *gin.Context) {
 		items["article"+strconv.Itoa(index+1)] = dto.ArticleInfoDto(art)
 	}
 
+	response.Success(ctx, gin.H{
+		"articles": items,
+	}, "获取全部文章成功")
+}
+
+// GetActive 获取最近的文章
+func GetActive(ctx *gin.Context) {
+	db := database.GetDB()
+	var articles []model.Article
+	items := make(map[string]model.ArticleDto)
+	db.Order("id desc").Limit(5).Find(&articles)
+
+	if len(articles) == 0 {
+		response.NotFind(ctx, nil, "未找到已发布的文章")
+		return
+	}
+
+	for index, art := range articles {
+		// 使用dto处理全部article
+		items["article"+strconv.Itoa(index+1)] = dto.ArticleInfoDto(art)
+	}
+
+	// 获取最近的文章
 	response.Success(ctx, gin.H{
 		"articles": items,
 	}, "获取全部文章成功")

@@ -10,7 +10,7 @@ import (
 
 // AddArticle 添加文章
 func AddArticle(ctx *gin.Context) {
-	DB := database.GetDB()
+	db := database.GetDB()
 
 	// 获得文章信息及用户信息
 	user, _ := ctx.Get("user")
@@ -28,7 +28,7 @@ func AddArticle(ctx *gin.Context) {
 		Likes:    0,
 	}
 
-	DB.Create(&newArt)
+	db.Create(&newArt)
 
 	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": newArt.Title, "artid": newArt.ID}, "文章发布成功")
 
@@ -36,7 +36,7 @@ func AddArticle(ctx *gin.Context) {
 
 // DelArticle 删除文章
 func DelArticle(ctx *gin.Context) {
-	DB := database.GetDB()
+	db := database.GetDB()
 
 	user, _ := ctx.Get("user")
 
@@ -49,19 +49,19 @@ func DelArticle(ctx *gin.Context) {
 	}
 
 	var article model.Article
-	DB.First(&article, artID)
+	db.First(&article, artID)
 	if article.UserID != userID {
 		response.Fail(ctx, nil, "删除请求非法")
 		return
 	}
 
-	DB.Delete(&article)
+	db.Delete(&article)
 	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": article.Title, "artid": article.ID}, "删除成功")
 }
 
 // ModArticle 修改文章
 func ModArticle(ctx *gin.Context) {
-	DB := database.GetDB()
+	db := database.GetDB()
 
 	user, _ := ctx.Get("user")
 	// 获取用户id和文章id
@@ -70,7 +70,7 @@ func ModArticle(ctx *gin.Context) {
 
 	// 判断该文章是否为该用户所有
 	var art model.Article
-	DB.First(&art, artID)
+	db.First(&art, artID)
 	if art.UserID != userID {
 		response.Fail(ctx, nil, "修改请求非法")
 		return
@@ -84,6 +84,6 @@ func ModArticle(ctx *gin.Context) {
 	art.HeadImg = article.(model.Article).HeadImg
 	art.Content = article.(model.Article).Content
 
-	DB.Save(&art)
+	db.Save(&art)
 	response.Success(ctx, gin.H{"name": user.(model.User).Name, "title": art.Title, "artid": art.ID}, "文章更新成功")
 }

@@ -1,5 +1,6 @@
 [common]
   port = "8080"
+  path = "/opt/images/"
 [mysql]
   username = "root"
   password = "1234"

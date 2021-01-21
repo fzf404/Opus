@@ -16,11 +16,14 @@ func main() {
 	database.InitSQL()
 
 	r := gin.Default()
+	// 设置最大文件大小
+	r.MaxMultipartMemory = 1 << 20
 	r = route.CollectRoute(r)
-	port := viper.GetString("commin.port")
+	port := viper.GetString("common.port")
 	if port != "" {
 		panic(r.Run(":" + port))
 	}
 	panic(r.Run())
 	
 }
+
