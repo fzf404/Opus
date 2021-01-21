@@ -27,5 +27,5 @@ func UploadImg(ctx *gin.Context) {
 		response.Fail(ctx, nil, "图片上传失败")
 		return
 	}
-	response.Success(ctx, gin.H{"url": file.Filename}, "上传成功")
+	response.Success(ctx, gin.H{"url": file.Filename[4:]}, "上传成功")
 }
