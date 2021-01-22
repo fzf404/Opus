@@ -50,8 +50,11 @@ func GetArts(ctx *gin.Context) {
 	// map处理全部articles
 	var articles []model.Article
 	items := make(map[string]model.ArticleDto)
+
+	getmaxart := viper.GetString("common.maxart")
+	maxart, _ := strconv.Atoi(getmaxart)
 	// 获取列表
-	db.Where("user_id = ?", userid).Find(&articles)
+	db.Where("user_id = ?", userid).Order("id desc").Limit(maxart).Find(&articles)
 	// 判断获取情况
 	if len(articles) == 0 {
 		response.NotFind(ctx, nil, "未找到已发布的文章")
