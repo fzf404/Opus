@@ -1,11 +1,16 @@
 package dto
 
-import "Opus/model"
+import (
+	"Opus/model"
+)
 
 // ArticleDto 文章Dto
 func ArticleDto(art model.Article) model.ArticleDto {
-
+	timeTemplate := "2006-01-02 15:04:05"
+	// creatTime, _ := time.Parse(timeTemplate, art.CreatedAt.Format(timeTemplate))
 	return model.ArticleDto{
+		CreateAt: art.CreatedAt.Local().Format(timeTemplate),
+		UpdateAt: art.UpdatedAt.Local().Format(timeTemplate),
 		ArtID:    art.ID,
 		UserID:   art.UserID,
 		UserName: art.UserName,
@@ -16,7 +21,7 @@ func ArticleDto(art model.Article) model.ArticleDto {
 		Content:  art.Content,
 		Share:    art.Share,
 		Likes:    art.Likes,
-		Super:		art.Super,
+		Super:    art.Super,
 	}
 }
 
@@ -33,6 +38,6 @@ func ArticleInfoDto(art model.Article) model.ArticleDto {
 		ArtType:  art.ArtType,
 		Share:    art.Share,
 		Likes:    art.Likes,
-		Super:		art.Super,
+		Super:    art.Super,
 	}
 }
