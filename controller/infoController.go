@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 // GetArticle 获取文章
@@ -126,9 +127,30 @@ func FindArticles(ctx *gin.Context) {
 // GetActive 获取最近的文章
 func GetActive(ctx *gin.Context) {
 	db := database.GetDB()
+	// 获取参数
+	datacode := ctx.Query("datacode")
+	getmaxart := viper.GetString("common.maxart")
+	maxart, _ := strconv.Atoi(getmaxart)
+
 	var articles []model.Article
 	items := make(map[string]model.ArticleDto)
-	db.Order("id desc").Limit(5).Find(&articles)
+
+	switch datacode {
+	case "0":
+		db.Order("id desc").Limit(maxart).Find(&articles)
+	case "1":
+		db.Where("super = ?", 1).Order("id desc").Limit(maxart).Find(&articles)
+	case "2":
+		db.Where("art_type = ?", "科技").Order("id desc").Limit(maxart).Find(&articles)
+	case "3":
+		db.Where("art_type = ?", "校园").Order("id desc").Limit(maxart).Find(&articles)
+	case "4":
+		db.Where("art_type = ?", "艺术").Order("id desc").Limit(maxart).Find(&articles)
+	case "10":
+		db.Where("art_type = ?", "未分类").Order("id desc").Limit(maxart).Find(&articles)
+	default:
+		db.Order("id desc").Limit(maxart).Find(&articles)
+	}
 
 	if len(articles) == 0 {
 		response.NotFind(ctx, nil, "未找到已发布的文章")
