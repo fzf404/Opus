@@ -16,6 +16,7 @@ func ArticleDto(art model.Article) model.ArticleDto {
 		Content:  art.Content,
 		Share:    art.Share,
 		Likes:    art.Likes,
+		Super:		art.Super,
 	}
 }
 
@@ -32,5 +33,6 @@ func ArticleInfoDto(art model.Article) model.ArticleDto {
 		ArtType:  art.ArtType,
 		Share:    art.Share,
 		Likes:    art.Likes,
+		Super:		art.Super,
 	}
 }
