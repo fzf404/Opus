@@ -6,7 +6,7 @@ import (
 
 // ArticleDto 文章Dto
 func ArticleDto(art model.Article) model.ArticleDto {
-	timeTemplate := "2006-01-02 15:04:05"
+	timeTemplate := "2006-01-02 15:04"
 	// creatTime, _ := time.Parse(timeTemplate, art.CreatedAt.Format(timeTemplate))
 	return model.ArticleDto{
 		CreateAt: art.CreatedAt.Local().Format(timeTemplate),
