@@ -17,7 +17,7 @@ type User struct {
 
 // UserDto 用户数据传输
 type UserDto struct {
-	UserID  uint   `json:"userID"`
+	UserID  uint   `json:"userid"`
 	Name    string `json:"name"`
 	Email   string `json:"email"`
 	HeadImg string `json:"headimg"`
