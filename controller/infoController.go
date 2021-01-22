@@ -46,6 +46,18 @@ func GetArts(ctx *gin.Context) {
 		response.NotFind(ctx, nil, "该用户不存在")
 		return
 	}
+	// 文章信息处理
+	pageid := ctx.PostForm("pageid")
+	if len(pageid) == 0 {
+		pageid = "0"
+	}
+
+	cpageid, err := strconv.Atoi(pageid)
+
+	if err != nil || cpageid < 0 {
+		response.Fail(ctx, nil, "请求字段非法~")
+		return
+	}
 
 	// map处理全部articles
 	var articles []model.Article
@@ -54,10 +66,10 @@ func GetArts(ctx *gin.Context) {
 	getmaxart := viper.GetString("common.maxart")
 	maxart, _ := strconv.Atoi(getmaxart)
 	// 获取列表
-	db.Where("user_id = ?", userid).Order("id desc").Limit(maxart).Find(&articles)
+	db.Where("user_id = ?", userid).Order("id desc").Limit(maxart).Offset(maxart * (cpageid - 1)).Find(&articles)
 	// 判断获取情况
 	if len(articles) == 0 {
-		response.NotFind(ctx, nil, "未找到已发布的文章")
+		response.NotFind(ctx, nil, "没有文章啦~")
 		return
 	}
 
@@ -66,6 +78,7 @@ func GetArts(ctx *gin.Context) {
 		items["article"+strconv.Itoa(index+1)] = dto.ArticleInfoDto(art)
 	}
 	response.Success(ctx, gin.H{
+		"pageid":   pageid,
 		"user":     dto.TouserUserDto(user),
 		"articles": items,
 	}, "获取全部文章成功")
