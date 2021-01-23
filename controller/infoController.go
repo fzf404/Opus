@@ -49,12 +49,12 @@ func GetArts(ctx *gin.Context) {
 	// 文章信息处理
 	pageid := ctx.PostForm("pageid")
 	if len(pageid) == 0 {
-		pageid = "0"
+		pageid = "1"
 	}
 
 	cpageid, err := strconv.Atoi(pageid)
 
-	if err != nil || cpageid < 0 {
+	if err != nil || cpageid < 1 {
 		response.Fail(ctx, nil, "请求字段非法~")
 		return
 	}
