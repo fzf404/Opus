@@ -15,14 +15,15 @@ func CollectRoute(r *gin.Engine) *gin.Engine {
 	// 登陆注册信息
 	r.POST("/register", controller.Register)
 	r.POST("/login", controller.Login)
-	r.POST("/myinfo", middleware.AuthMiddleware(), controller.MyInfo)
 
 	artRoutes := r.Group("")
 	artRoutes.Use(middleware.AuthMiddleware())
+	// 获得用户信息
+	artRoutes.POST("/myinfo", controller.MyInfo)
 	// 添加文章
-	artRoutes.POST("/addart", middleware.ArtMiddleware(), controller.AddArticle)
+	artRoutes.POST("/addart", controller.AddArticle)
 	// 修改文章
-	artRoutes.POST("/modart", middleware.ArtMiddleware(), controller.ModArticle)
+	artRoutes.POST("/modart", controller.ModArticle)
 	// 删除文章
 	artRoutes.POST("/delart", controller.DelArticle)
 	// 上传图片
