@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opus | 编辑器</title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/popper.js/1.16.0/umd/popper.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/src/edit/wangEditor.min.js"></script>
+  <link rel="stylesheet" href="/src/common/style.css">
+  <script src="/src/navbar/navbar.js"></script>
+  <script src="/src/edit/edit.js"></script>
+  <script src="/src/footbar/footbar.js"></script>
+
+</head>
+
+<body>
+  <div id="navbar"></div>
+
+  <div class="container" id="main-body">
+    <label></label>
+    <h2 class="display-4" style="font-size: 3rem;">欢迎使用 Opus 编辑器</h2>
+    <hr class="my-3" />
+    <div class="row">
+      <div class="col-md-9">
+        <form>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">标题</span>
+            </div>
+            <input type="text" class="form-control" name="title" placeholder="文章标题">
+            <div class="input-group-append">
+              <select class="btn btn-outline-info" name="arttype">
+                <option>未分类</option>
+                <option>科技</option>
+                <option>校园</option>
+                <option>艺术</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">首页图</span>
+            </div>
+            <input type="text" class="form-control text-muted" id="imgpath" placeholder="首页图片地址">
+            <div class="input-group-append">
+              <input type="file" class="d-none" id="uploadimg">
+              <button class="btn btn-outline-info" id="upimg">点击上传首页图片</button>
+            </div>
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">描述</span>
+            </div>
+            <input type="text" name="subtitle" class="form-control" placeholder="文章描述">
+          </div>
+
+          <div id="div1"></div>
+        </form>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-light p-3">
+          <h2 class="text-secondary">帮助</h2>
+          <hr />
+          <p class="lead">💾 添加图片</p>
+          <div class="">
+            <p>1. 点击编辑器的图片按钮</p>
+            <img src="https://s3.ax1x.com/2021/01/16/sD7cIP.png" class="w-100">
+            <p>2. 直接上传图片或粘贴图片网络链接到此处</p>
+          </div>
+          <hr />
+          <div class="text-center">
+            <p>在线帮助请加Q群</p>
+            <code>929044247</code>
+          </div>
+        </div>
+        <div class="card bg-info mt-4">
+          <a class="btn btn-lg btn-info m-3" data-toggle="modal" data-target="#pubModal">确认发布</a>
+
+          <div class="modal fade" id="pubModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+
+                <!-- 模态框头部 -->
+                <div class="modal-header">
+                  <h4 class="modal-title">确认发布</h4>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- 模态框主体 -->
+                <div class="modal-body">
+                  是否确认发布？
+                </div>
+
+                <!-- 模态框底部 -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-info" data-dismiss="modal" id="publish">确认</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="footbar">foot</div>
+
+</body>
+
+</html>

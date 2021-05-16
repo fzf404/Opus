@@ -1,0 +1,4 @@
+#choice-item button:focus{
+  background-color: #1b9db1;
+  color: #fff;
+}

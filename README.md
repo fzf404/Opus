@@ -1,13 +1,15 @@
 # Opus
 
-> 琴理工作室第一次考核Opus后端
+> 作品发布平台
+>
+> 琴理工作室 2020 寒假考核
 
-## About
+![Opus](https://cdn.jsdelivr.net/gh/fzf404/image/Opus/show.webp)
 
-> `gin`: 框架开发
->
-> `gorm_v2`: 连接数据库
->
-> `viper`: 管理配置文件
->
-> `jwt-go`: 管理Token
+## 前端
+
+> Bootstrap + Jquery
+
+## 后端
+
+> Golang + Gin + Gorm

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opus | 用户主页</title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/popper.js/1.16.0/umd/popper.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" href="/src/common/style.css">
+  <script src="/src/navbar/navbar.js"></script>
+  <script src="/src/user/user.js"></script>
+  <script src="/src/footbar/footbar.js"></script>
+</head>
+
+<body>
+
+  <div id="navbar"></div>
+
+  <div class="container" id="main-body">
+    <div class="row py-5 px-3">
+
+      <div class="col-sm-3">
+        <div class="card bg-light">
+          <div class="m-3">
+            <img src="/static/img/noface.jpg" class="img-thumbnail rounded-circle" id="headimg">
+          </div>
+          <div class="mx-2">
+            <h4 class="text-center" id="username">NULL</h4>
+            <hr>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-9" id="cards">
+        <div id="article1" class="article"></div>
+        <div id="article2" class="article"></div>
+        <div id="article3" class="article"></div>
+        <div id="article4" class="article"></div>
+        <div id="article5" class="article"></div>
+        <div class="row">
+          <div class="btn-group btn-group-lg m-auto">
+            <button type="button" class="btn btn-info disabled" id="before">前一页</button>
+            <button type="button" class="btn btn-light" id="pageid">第 1 页</button>
+            <button type="button" class="btn btn-info" id="next">后一页</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="footbar"></div>
+
+</body>
+
+</html>

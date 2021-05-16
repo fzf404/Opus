@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opus | 文章</title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/popper.js/1.16.0/umd/popper.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" href="/src/common/style.css">
+  <script src="/src/navbar/navbar.js"></script>
+  <script src="/src/article/article.js"></script>
+  <script src="/src/footbar/footbar.js"></script>
+</head>
+
+<body>
+
+  <div id="navbar"></div>
+
+  <div class="container" id="main-body">
+    <div class="row py-5 px-3">
+
+      <div class="col-sm-3">
+
+        <div class="card bg-light">
+          <div class="p-3">
+            <img src="/static/img/noface.jpg" class="img-thumbnail rounded-circle" id="headimg">
+          </div>
+          <div class="px-2">
+            <h4 class="text-center" id="username">NULL</h4>
+            <hr>
+          </div>
+          <div id="artinfo" class="m-auto text-muted">
+            <div class="my-3">文章ID：<span class="badge badge-info" id="artid">NULL</span></div>
+            <div class="my-3">文章类型：<span class="badge badge-warning text-white" id="arttype">NULL</span></div>
+            <div class="my-3">文章创建：<span class="badge badge-secondary" id="createTime">NULL</span></div>
+            <div class="my-3">文章修改：<span class="badge badge-secondary" id="updateTime">NULL</span></div>
+            <div class="my-3">赞数：<span class="badge badge-success" id="likes">0</span></div>
+            <div class="my-3">分享：<span class="share badge badge-danger" id="share">0</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-sm-9">
+        <div class="card bg-light p-3">
+          <h1 class="text-center" id="title">NULL</h1>
+          <hr class="mt-3" />
+          <img src="/static/img/noimg.jpg" class="d-block mx-auto my-3" id="artimg">
+          <div id="content" class="p-3">
+            <h2 class="text-center display-1 alert alert-lg alert-danger d-none" id="userNULL">该文章不存在哦~</h2>
+            <h2 class="text-center display-1 alert alert-lg alert-danger d-none" id="serverNULL">服务器可能正在维护，刷新重试或联系管理员
+            </h2>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="footbar"></div>
+
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<style>
+  .nav-item {
+    margin-left: 20px;
+  }
+
+  #search {
+    border-radius: 20px;
+  }
+</style>
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark shadow fixed-top" id="navbar">
+  <div class="container">
+    <a href="/"><img class="navbar-brand" src="/static/img/logo.png" style="width: 100px"></img></a>
+    <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
+      aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+      <ul class="navbar-nav ml-2 my-1 lead">
+        <li class="nav-item">
+          <a class="nav-link" href="/" id="home">首页</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about/" id="about">关于</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/edit/" id="edit">发布</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="/" id="dropdownId" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">案例</a>
+          <div class="dropdown-menu" aria-labelledby="dropdownId">
+            <a class="dropdown-item" href="/develop/gdy/work02">前端作品展示</a>
+            <a class="dropdown-item" href="/">Action 2</a>
+          </div>
+        </li>
+      </ul>
+      <div class="form-inline my-1 mx-auto">
+        <input class="form-control mr-2 my-1 bg-dark" type="text" placeholder="搜索文章名或用户" id="search-input">
+        <button class="btn btn-info" id="search">搜索</button>
+      </div>
+    </div>
+    <ul class="navbar-nav my-1">
+      <li class="nav-item" id="login-link">
+        <a href="/login" class="btn btn-outline-success">登录 / 注册</a>
+      </li>
+      <li class="nav-item d-none" id="userinfo">
+        <a href="/" class="btn btn-outline-secondary mr-2">我的首页</a>
+        <img class="navbar-brand rounded rounded-circle" href="/" style="height: 60px" id="nav-headimg"></img>
+      </li>
+      <li class="nav-item d-none" id="navbar-login">
+        <button class="btn btn-outline-success d-none d-sm-block">登录</button>
+      </li>
+      <li class="nav-item d-none" id="navbar-register">
+        <button class=" btn btn-outline-info">注册</button>
+      </li>
+
+    </ul>
+  </div>
+</nav>
