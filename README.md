@@ -4,7 +4,7 @@
 >
 > 琴理工作室 2020 寒假考核
 
-![Opus](https://cdn.jsdelivr.net/gh/fzf404/image/opus/show.webp)
+![Opus](https://img.fzf404.art/opus/show.webp)
 
 ## 前端
 
